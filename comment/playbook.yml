@@ -1,0 +1,54 @@
+---
+
+- hosts: all
+  user: root
+  gather_facts: false
+
+  pre_tasks:
+    - name: Ensure python 2.7 is present
+      raw: test -e /usr/bin/python || (apk --no-cache add python)
+      changed_when: false
+    - name: Gather facts
+      setup:
+
+  tasks:
+    - name: Ensure ruby and dependencies are present
+      apk:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+      with_items:
+        - ruby
+        - ruby-json
+        - ruby-dev
+        - ruby-bundler
+        - build-base
+
+    - name: Ensure app dir is present
+      file:
+        path: /app
+        state: directory
+        mode: 0755
+
+    - name: Ensure application code is present
+      copy:
+        src: "{{ item }}"
+        dest: /app
+      with_fileglob:
+        - "Gemfile*"
+        - "*.r[bu]"
+
+    - name: Run bundler
+      bundler:
+        state: present
+        chdir: /app
+
+    - name: Remove build dependencies
+      apk:
+        name: "{{ item }}"
+        state: absent
+        update_cache: no
+      with_items:
+        - ruby-dev
+        - ruby-bundler
+        - build-base
