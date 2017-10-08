@@ -14,6 +14,7 @@ RUN apk --no-cache add --virtual .build-deps \
   && bundle install \
   && gem cleanup \
   && rm -rf /usr/lib/ruby/gems/*/cache/* \
+  && rm -rf /root/.bundle \
   \
   && apk del .build-deps
 
