@@ -1,13 +1,13 @@
 FROM alpine:3.6
 LABEL maintainer="Anton Kvashenkin <anton.jugatsu@gmail.com> (@jugatsu)"
 
+RUN apk --no-cache add ruby ruby-json
+
 ENV APP_HOME /app
 WORKDIR $APP_HOME
 COPY Gemfile* $APP_HOME/
 
-RUN \
-    apk --no-cache add ruby ruby-json; \
-    apk --no-cache add --virtual .build-deps \
+RUN apk --no-cache add --virtual .build-deps \
     build-base \
     ruby-dev \
     ruby-bundler \
