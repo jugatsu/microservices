@@ -22,7 +22,6 @@
       "type": "shell",
       "inline": [
         "apk del python",
-        "apk del bash",
         "rm -rf /var/cache/apk/*"
       ]
     }
