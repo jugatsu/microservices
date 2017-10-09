@@ -1,0 +1,36 @@
+{
+  "builders": [
+    {
+      "type": "docker",
+      "image": "jugatsu/alpine-bash:latest",
+      "commit": true,
+      "changes": [
+        "LABEL maintainer=\"Anton Kvashenkin <anton.jugatsu@gmail.com> (@jugatsu)\"",
+        "WORKDIR /app",
+        "ENV COMMENT_DATABASE_HOST=comment_db",
+        "ENV COMMENT_DATABASE=comments",
+        "CMD [\"puma\"]"
+      ]
+    }
+  ],
+  "provisioners":[
+    {
+      "type": "ansible",
+      "playbook_file": "playbook.yml"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "apk del python",
+        "rm -rf /var/cache/apk/*"
+      ]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "docker-tag",
+      "repository": "jugatsu/alpine-packer",
+      "tag": "packer"
+    }
+  ]
+}
