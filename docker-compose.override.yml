@@ -1,0 +1,24 @@
+version: '3.3'
+
+services:
+  mongo:
+    networks:
+      internal:
+        aliases:
+          - post_db
+          - comment_db
+  post:
+    build: ./post-py
+    networks:
+      - internal
+  comment:
+    build: ./comment
+    networks:
+      - internal
+  ui:
+    build: ./ui
+    networks:
+      - internal
+
+networks:
+  internal: {}
