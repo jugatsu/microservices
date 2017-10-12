@@ -1,0 +1,34 @@
+version: '3.3'
+
+services:
+  mongo:
+    networks:
+      back_net:
+        aliases:
+          - post_db
+          - comment_db
+  post:
+    networks:
+      - back_net
+      - front_net
+  comment:
+    networks:
+      - back_net
+      - front_net
+  ui:
+    networks:
+      - front_net
+
+networks:
+  front_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.1.0/24
+  back_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.2.0/24
