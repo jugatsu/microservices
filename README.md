@@ -22,15 +22,14 @@ Contains files for building `UI` microservice.
 
 #### `/scripts`
 
-* `create-docker-host.sh`: example script to provision docker host via `docker-machine` in GCE.
-* `run-containers.sh`: script for running all containers for [reddit](https://github.com/Artemmkin/reddit) app.
+`create-docker-host.sh`: example script to provision docker host via `docker-machine` in GCE.
 
 # Usage
 
-Run using images from the Docker Hub repository:
+Run using `docker-compose`:
 
 ```bash
-$ scripts/run-containers.sh
+$ docker-compose up -d
 ```
 
 ## Build images locally
