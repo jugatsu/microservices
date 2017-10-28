@@ -33,6 +33,10 @@ services:
       - '--path.procfs=/host/proc'
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
+  mongodb-exporter:
+    image: jugatsu/mongodb_exporter:latest
+    environment:
+      - MONGODB_URL=mongodb://mongo:27017
 
 volumes:
   mongo_data: {}

@@ -25,6 +25,9 @@ services:
   node-exporter:
     networks:
       - internal
+  mongodb-exporter:
+    networks:
+      - internal
 
 networks:
   internal: {}

@@ -21,3 +21,8 @@ scrape_configs:
     static_configs:
       - targets:
         - 'node-exporter:9100'
+
+  - job_name: 'mongodb'
+    static_configs:
+      - targets:
+        - 'mongodb-exporter:9001'
