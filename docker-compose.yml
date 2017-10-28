@@ -23,7 +23,7 @@ services:
     ports:
       - "9090:9090"
   node-exporter:
-    image: prom/node-exporter:v0.15.0
+    image: prom/node-exporter:${NODE_EXPORTER_VERSION}
     user: root
     volumes:
       - /proc:/host/proc:ro
