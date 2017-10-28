@@ -26,7 +26,7 @@ services:
   prometheus:
     image: ${DOCKERHUB_USERNAME}/prometheus:${PROMETHEUS_VERSION}
     ports:
-      - "9090:9090"
+      - "${PROMETHEUS_PORT}:9090"
 
   node-exporter:
     image: prom/node-exporter:${NODE_EXPORTER_VERSION}
@@ -49,7 +49,7 @@ services:
     image: ${DOCKERHUB_USERNAME}/blackbox-exporter:${BLACKBOX_EXPORTER_VERSION}
     command: '--config.file=/config/blackbox.yml'
     ports:
-      - "9115:9115"
+      - "${BLACKBOX_EXPORTER_PORT}:9115"
 
 volumes:
   mongo_data: {}
