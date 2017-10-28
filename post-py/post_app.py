@@ -2,8 +2,8 @@ from flask import Flask, request
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 from bson.json_util import dumps
+from helpers import health
 import os
-
 
 mongo_host = os.getenv('POST_DATABASE_HOST', '127.0.0.1')
 mongo_port = os.getenv('POST_DATABASE_PORT', '27017')
@@ -46,6 +46,9 @@ def get_post(id):
     return dumps(post)
 
 
+@app.route("/healthcheck")
+def healthcheck():
+    return health(mongo_host, mongo_port)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
