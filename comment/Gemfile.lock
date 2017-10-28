@@ -3,19 +3,29 @@ GEM
   specs:
     bson (4.2.2)
     bson_ext (1.5.1)
+    et-orbi (1.0.8)
+      tzinfo
     mongo (2.4.3)
       bson (>= 4.2.1, < 5.0.0)
     mustermann (1.0.0)
+    prometheus-client (0.7.1)
+      quantile (~> 0.2.0)
     puma (3.10.0)
+    quantile (0.2.0)
     rack (2.0.3)
     rack-protection (2.0.0)
       rack
+    rufus-scheduler (3.4.2)
+      et-orbi (~> 1.0)
     sinatra (2.0.0)
       mustermann (~> 1.0)
       rack (~> 2.0)
       rack-protection (= 2.0.0)
       tilt (~> 2.0)
+    thread_safe (0.3.6)
     tilt (2.0.8)
+    tzinfo (1.2.3)
+      thread_safe (~> 0.1)
 
 PLATFORMS
   ruby
@@ -23,8 +33,11 @@ PLATFORMS
 DEPENDENCIES
   bson_ext
   mongo
+  prometheus-client
   puma
+  rack
+  rufus-scheduler
   sinatra
 
 BUNDLED WITH
-   1.15.3
+   1.15.4
