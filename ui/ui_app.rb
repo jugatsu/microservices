@@ -4,12 +4,38 @@ require 'json/ext' # for .to_json
 require 'haml'
 require 'uri'
 require 'rest-client'
+require 'prometheus/client'
+require './helpers'
+require 'rufus-scheduler'
 
 
 post_service_host = ENV['POST_SERVICE_HOST'] || '127.0.0.1'
 post_service_port = ENV['POST_SERVICE_PORT'] || '4567'
 comment_service_host = ENV['COMMENT_SERVICE_HOST'] || '127.0.0.1'
 comment_service_port = ENV['COMMENT_SERVICE_PORT'] || '4567'
+
+## Create and register metrics
+prometheus = Prometheus::Client.registry
+
+ui_health_gauge = Prometheus::Client::Gauge.new(:ui_health, 'Health status of UI service')
+ui_health_post_gauge = Prometheus::Client::Gauge.new(:ui_health_post_availability, 'Check if Post service is available to UI')
+ui_health_comment_gauge = Prometheus::Client::Gauge.new(:ui_health_comment_availability, 'Check if Comment service is available to UI')
+prometheus.register(ui_health_gauge)
+prometheus.register(ui_health_post_gauge)
+prometheus.register(ui_health_comment_gauge)
+
+## Schedule healthcheck function
+build_info=File.readlines('build_info.txt')
+
+scheduler = Rufus::Scheduler.new
+
+scheduler.every '3s' do
+  check = JSON.parse(healthcheck(post_service_host, post_service_port, comment_service_host, comment_service_port))
+  ui_health_gauge.set({ version: check['version'], commit_hash: build_info[0].strip, branch: build_info[1].strip }, check['status'])
+  ui_health_post_gauge.set({ version: check['version'], commit_hash: build_info[0].strip, branch: build_info[1].strip }, check['dependent_services']['post'])
+  ui_health_comment_gauge.set({ version: check['version'], commit_hash: build_info[0].strip, branch: build_info[1].strip }, check['dependent_services']['comment'])
+end
+
 
 configure do
   enable :sessions
@@ -103,4 +129,9 @@ post '/post/:id/comment' do
     session[:flashes] << { type: 'alert-success', message: 'Comment successuly published' }
   end
     redirect back
+end
+
+
+get '/healthcheck' do
+  healthcheck(post_service_host, post_service_port, comment_service_host, comment_service_port)
 end
