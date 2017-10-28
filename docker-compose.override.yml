@@ -28,6 +28,9 @@ services:
   mongodb-exporter:
     networks:
       - internal
+  blackbox-exporter:
+    networks:
+      - internal
 
 networks:
   internal: {}

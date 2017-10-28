@@ -38,5 +38,11 @@ services:
     environment:
       - MONGODB_URL=mongodb://mongo:27017
 
+  blackbox-exporter:
+    image: ${DOCKERHUB_USERNAME}/blackbox-exporter:latest
+    command: '--config.file=/config/blackbox.yml'
+    ports:
+      - "9115:9115"
+
 volumes:
   mongo_data: {}
