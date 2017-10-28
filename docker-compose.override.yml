@@ -21,7 +21,7 @@ services:
       - internal
   prometheus:
     networks:
-      - internal    
+      - internal
 
 networks:
   internal: {}
