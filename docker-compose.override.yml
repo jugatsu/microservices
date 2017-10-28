@@ -22,6 +22,9 @@ services:
   prometheus:
     networks:
       - internal
+  node-exporter:
+    networks:
+      - internal
 
 networks:
   internal: {}
