@@ -41,12 +41,12 @@ services:
       - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
 
   mongodb-exporter:
-    image: ${DOCKERHUB_USERNAME}/mongodb_exporter:latest
+    image: ${DOCKERHUB_USERNAME}/mongodb_exporter:${MONGO_EXPORTER_VERSION}
     environment:
       - MONGODB_URL=mongodb://mongo:27017
 
   blackbox-exporter:
-    image: ${DOCKERHUB_USERNAME}/blackbox-exporter:latest
+    image: ${DOCKERHUB_USERNAME}/blackbox-exporter:${BLACKBOX_EXPORTER_VERSION}
     command: '--config.file=/config/blackbox.yml'
     ports:
       - "9115:9115"
