@@ -1,7 +1,7 @@
 FROM alpine:3.6
 LABEL maintainer="Anton Kvashenkin <anton.jugatsu@gmail.com> (@jugatsu)"
 
-RUN apk --no-cache add ruby ruby-json
+RUN apk --no-cache add ruby ruby-json tzdata
 
 ENV APP_HOME /app
 
