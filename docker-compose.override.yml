@@ -19,6 +19,9 @@ services:
     build: ./ui
     networks:
       - internal
+  prometheus:
+    networks:
+      - internal    
 
 networks:
   internal: {}

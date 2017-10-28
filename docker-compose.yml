@@ -18,6 +18,10 @@ services:
     ports:
       - "${UI_PORT}:9292/tcp"
     depends_on: ['post', 'comment']
+  prometheus:
+    image: ${DOCKERHUB_USERNAME}/prometheus:${PROMETHEUS_VERSION}
+    ports:
+      - "9090:9090"
 
 volumes:
   mongo_data: {}
