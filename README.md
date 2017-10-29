@@ -37,21 +37,17 @@ $ docker-compose up -d
 To build `post` container run:
 
 ```bash
-$ docker build -t post:1.0 -f post-py/Dockerfile-1.0 post-py/
 $ docker build -t post:latest post-py/
 ```
 
 To build `comment` container run:
 
 ```bash
-$ docker build -t comment:1.0 -f comment/Dockerfile-1.0 comment/
 $ docker build -t comment:latest comment/
 ```
 
 To build `UI` container run:
 
 ```bash
-$ docker build -t ui:1.0 -f ui/Dockerfile-1.0 ui
-$ docker build -t ui:2.0 -f ui/Dockerfile-2.0 ui
 $ docker build -t ui:latest ui/
 ```
