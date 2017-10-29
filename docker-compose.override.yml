@@ -31,6 +31,9 @@ services:
   blackbox-exporter:
     networks:
       - internal
+  grafana:
+    networks:
+      - internal
 
 networks:
   internal: {}

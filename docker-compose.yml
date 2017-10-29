@@ -51,5 +51,10 @@ services:
     ports:
       - "${BLACKBOX_EXPORTER_PORT}:9115"
 
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+
 volumes:
   mongo_data: {}
