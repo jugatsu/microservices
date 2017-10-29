@@ -10,21 +10,21 @@ services:
         target: /data/db
 
   post:
-    image: ${DOCKERHUB_USERNAME}/post:${POST_VERSION}
+    image: ${USER_NAME}/post:${POST_VERSION}
     depends_on: ['mongo']
 
   comment:
-    image: ${DOCKERHUB_USERNAME}/comment:${COMMENT_VERSION}
+    image: ${USER_NAME}/comment:${COMMENT_VERSION}
     depends_on: ['mongo']
 
   ui:
-    image: ${DOCKERHUB_USERNAME}/ui:${UI_VERSION}
+    image: ${USER_NAME}/ui:${UI_VERSION}
     ports:
       - "${UI_PORT}:9292/tcp"
     depends_on: ['post', 'comment']
 
   prometheus:
-    image: ${DOCKERHUB_USERNAME}/prometheus:${PROMETHEUS_VERSION}
+    image: ${USER_NAME}/prometheus:${PROMETHEUS_VERSION}
     ports:
       - "${PROMETHEUS_PORT}:9090"
 
@@ -41,12 +41,12 @@ services:
       - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
 
   mongodb-exporter:
-    image: ${DOCKERHUB_USERNAME}/mongodb_exporter:${MONGO_EXPORTER_VERSION}
+    image: ${USER_NAME}/mongodb_exporter:${MONGO_EXPORTER_VERSION}
     environment:
       - MONGODB_URL=mongodb://mongo:27017
 
   blackbox-exporter:
-    image: ${DOCKERHUB_USERNAME}/blackbox-exporter:${BLACKBOX_EXPORTER_VERSION}
+    image: ${USER_NAME}/blackbox-exporter:${BLACKBOX_EXPORTER_VERSION}
     command: '--config.file=/config/blackbox.yml'
     ports:
       - "${BLACKBOX_EXPORTER_PORT}:9115"
