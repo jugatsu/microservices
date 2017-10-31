@@ -24,6 +24,12 @@ Contains files for building `UI` microservice.
 
 `create-docker-host.sh`: example script to provision docker host via `docker-machine` in GCE.
 
+#### `/prometheus`
+
+`blackbox-exporter/`: Dockerfile and config file for building [blackbox_exporter](https://github.com/prometheus/blackbox_exporter) image.
+
+`config/`: Dockerfile and config file for building [prometheus](https://github.com/prometheus/prometheus) image.
+
 # Usage
 
 Run using `docker-compose`:
@@ -34,24 +40,20 @@ $ docker-compose up -d
 
 ## Build images locally
 
-To build `post` container run:
+To build `post` container run from `post-py` folder:
 
 ```bash
-$ docker build -t post:1.0 -f post-py/Dockerfile-1.0 post-py/
-$ docker build -t post:latest post-py/
+$ . ./docker_build.sh
 ```
 
-To build `comment` container run:
+To build `comment` container run from `comment` folder:
 
 ```bash
-$ docker build -t comment:1.0 -f comment/Dockerfile-1.0 comment/
-$ docker build -t comment:latest comment/
+$ . ./docker_build.sh
 ```
 
-To build `UI` container run:
+To build `ui` container run from `ui` folder:
 
 ```bash
-$ docker build -t ui:1.0 -f ui/Dockerfile-1.0 ui
-$ docker build -t ui:2.0 -f ui/Dockerfile-2.0 ui
-$ docker build -t ui:latest ui/
+$ . ./docker_build.sh
 ```
