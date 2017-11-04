@@ -90,7 +90,7 @@ services:
     - back_net
 
   alertmanager:
-    image: ${USER_NAME}/alertmanager:latest
+    image: ${USER_NAME}/alertmanager:${ALERTMANAGER_VERSION}
     command:
       '-config.file=/etc/alertmanager/config.yml'
     ports:
