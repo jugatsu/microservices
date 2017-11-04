@@ -16,8 +16,10 @@ prometheus = Prometheus::Client.registry
 
 comment_health_gauge = Prometheus::Client::Gauge.new(:comment_health, 'Health status of Comment service')
 comment_health_db_gauge = Prometheus::Client::Gauge.new(:comment_health_mongo_availability, 'Check if MongoDB is available to Comment')
+comment_count = Prometheus::Client::Counter.new(:comment_count, 'A counter of new comments')
 prometheus.register(comment_health_gauge)
 prometheus.register(comment_health_db_gauge)
+prometheus.register(comment_count)
 
 ## Schedule healthcheck function
 build_info=File.readlines('build_info.txt')
@@ -26,8 +28,8 @@ scheduler = Rufus::Scheduler.new
 
 scheduler.every '3s' do
   check = JSON.parse(healthcheck(mongo_host, mongo_port))
-  comment_health_gauge.set({ version: check['version'], commit_hash: build_info[0].strip, branch: build_info[1].strip }, check['status'])
-  comment_health_db_gauge.set({ version: check['version'], commit_hash: build_info[0].strip, branch: build_info[1].strip }, check['dependent_services']['commentdb'])
+  comment_health_gauge.set({ version: check['version'].strip, commit_hash: build_info[0].strip, branch: build_info[1].strip }, check['status'])
+  comment_health_db_gauge.set({ version: check['version'].strip, commit_hash: build_info[0].strip, branch: build_info[1].strip }, check['dependent_services']['commentdb'])
 end
 
 
@@ -49,6 +51,7 @@ post '/add_comment/?' do
   db = settings.mongo_db
   result = db.insert_one post_id: params['post_id'], name: params['name'], email: params['email'], body: params['body'], created_at: params['created_at']
   db.find(_id: result.inserted_id).to_a.first.to_json
+  comment_count.increment
 end
 
 get '/healthcheck' do
