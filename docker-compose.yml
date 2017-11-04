@@ -36,6 +36,11 @@ services:
 
   prometheus:
     image: ${USER_NAME}/prometheus:${PROMETHEUS_VERSION}
+    volumes:
+      - prometheus_data:/prometheus-data
+    command:
+      - '-config.file=/etc/prometheus/prometheus.yml'
+      - '-storage.local.path=/prometheus-data'
     ports:
       - "${PROMETHEUS_PORT}:9090"
     networks:
@@ -108,6 +113,7 @@ services:
 volumes:
   grafana_data: {}
   mongo_data: {}
+  prometheus_data: {}
 
 networks:
   back_net: {}
