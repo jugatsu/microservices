@@ -85,6 +85,14 @@ services:
     networks:
     - back_net
 
+  alertmanager:
+    image: prom/alertmanager:latest
+    command: '-config.file=/etc/alertmanager/config.yml'
+    ports:
+      - 9093:9093
+    networks:
+      - back_net
+
   grafana:
     image: grafana/grafana
     volumes:
