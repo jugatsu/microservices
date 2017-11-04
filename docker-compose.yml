@@ -5,9 +5,7 @@ services:
   mongo:
     image: mongo:${MONGO_VERSION}
     volumes:
-      - type: volume
-        source: mongo_data
-        target: /data/db
+      - mongo_data:/data/db
     networks:
       back_net:
         aliases:
