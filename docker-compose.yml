@@ -87,6 +87,12 @@ services:
 
   grafana:
     image: grafana/grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=secret
+    depends_on: ['prometheus']
     ports:
       - 3000:3000
     networks:
@@ -94,6 +100,7 @@ services:
       - back_net
 
 volumes:
+  grafana_data: {}
   mongo_data: {}
 
 networks:
