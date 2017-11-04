@@ -78,7 +78,7 @@ services:
       - back_net
 
   cadvisor:
-    image: google/cadvisor:latest
+    image: google/cadvisor
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw
