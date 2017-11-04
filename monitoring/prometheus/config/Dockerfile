@@ -10,3 +10,4 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       maintainer="Anton Kvashenkin <anton.jugatsu@gmail.com> (@jugatsu)"
 
 ADD prometheus.yml /etc/prometheus/
+ADD alert.rules /etc/prometheus/
