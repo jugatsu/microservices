@@ -86,7 +86,7 @@ services:
     - back_net
 
   alertmanager:
-    image: prom/alertmanager:latest
+    image: ${USER_NAME}/alertmanager:latest
     command: '-config.file=/etc/alertmanager/config.yml'
     ports:
       - 9093:9093
