@@ -9,6 +9,7 @@ import time
 
 CONTENT_TYPE_LATEST = str('text/plain; version=0.0.4; charset=utf-8')
 REQUEST_DB_LATENCY = prometheus_client.Histogram('post_read_db_seconds', 'Request DB time')
+POST_COUNT = prometheus_client.Counter('post_count', 'A counter of new posts')
 
 mongo_host = os.getenv('POST_DATABASE_HOST', '127.0.0.1')
 mongo_port = os.getenv('POST_DATABASE_PORT', '27017')
@@ -46,6 +47,7 @@ def add_post():
     link = request.values.get("link")
     created_at = request.values.get("created_at")
     mongo_db.insert({"title": title, "link": link, "created_at": created_at, "votes": 0})
+    POST_COUNT.inc()
     return 'OK'
 
 
