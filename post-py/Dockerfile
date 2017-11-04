@@ -5,6 +5,10 @@ RUN apk --no-cache add python3 py3-pip \
   && pip3 install flask pymongo
 
 WORKDIR /app
+COPY requirements.txt /app
+
+RUN pip3 install -r requirements.txt
+
 COPY . /app/
 
 ENV POST_DATABASE_HOST=post_db
