@@ -70,7 +70,8 @@ services:
 
   blackbox-exporter:
     image: ${USER_NAME}/blackbox-exporter:${BLACKBOX_EXPORTER_VERSION}
-    command: '--config.file=/config/blackbox.yml'
+    command:
+      '--config.file=/config/blackbox.yml'
     ports:
       - "${BLACKBOX_EXPORTER_PORT}:9115"
     networks:
@@ -90,7 +91,8 @@ services:
 
   alertmanager:
     image: ${USER_NAME}/alertmanager:latest
-    command: '-config.file=/etc/alertmanager/config.yml'
+    command:
+      '-config.file=/etc/alertmanager/config.yml'
     ports:
       - 9093:9093
     networks:
