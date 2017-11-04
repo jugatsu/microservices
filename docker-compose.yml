@@ -8,25 +8,41 @@ services:
       - type: volume
         source: mongo_data
         target: /data/db
+    networks:
+      back_net:
+        aliases:
+          - post_db
+          - comment_db
 
   post:
     image: ${USER_NAME}/post:${POST_VERSION}
     depends_on: ['mongo']
+    networks:
+      - front_net
+      - back_net
 
   comment:
     image: ${USER_NAME}/comment:${COMMENT_VERSION}
     depends_on: ['mongo']
+    networks:
+      - front_net
+      - back_net
 
   ui:
     image: ${USER_NAME}/ui:${UI_VERSION}
     ports:
       - "${UI_PORT}:9292/tcp"
     depends_on: ['post', 'comment']
+    networks:
+      - front_net
 
   prometheus:
     image: ${USER_NAME}/prometheus:${PROMETHEUS_VERSION}
     ports:
       - "${PROMETHEUS_PORT}:9090"
+    networks:
+      - front_net
+      - back_net
 
   node-exporter:
     image: prom/node-exporter:${NODE_EXPORTER_VERSION}
@@ -39,22 +55,35 @@ services:
       - '--path.procfs=/host/proc'
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
+    networks:
+      - back_net
 
   mongodb-exporter:
     image: ${USER_NAME}/mongodb_exporter:${MONGO_EXPORTER_VERSION}
     environment:
       - MONGODB_URL=mongodb://mongo:27017
+    networks:
+      - back_net
 
   blackbox-exporter:
     image: ${USER_NAME}/blackbox-exporter:${BLACKBOX_EXPORTER_VERSION}
     command: '--config.file=/config/blackbox.yml'
     ports:
       - "${BLACKBOX_EXPORTER_PORT}:9115"
+    networks:
+      - back_net
 
   grafana:
     image: grafana/grafana
     ports:
       - 3000:3000
+    networks:
+      - front_net
+      - back_net
 
 volumes:
   mongo_data: {}
+
+networks:
+  back_net: {}
+  front_net: {}
