@@ -25,7 +25,9 @@ post:
 ui:
 	echo $(GIT_HASH) > src/ui/build_info.txt
 	echo $(BRANCH) >> src/ui/build_info.txt
-	docker build -t $(USER_NAME)/ui:$(GIT_HASH) src/ui
+	docker build --build-arg VCS_REF=$(GIT_HASH) \
+	  --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+		-t $(USER_NAME)/ui:$(GIT_HASH) src/ui
 	docker tag $(USER_NAME)/ui:$(GIT_HASH) $(USER_NAME)/ui:$(VERSION)
 
 prom:
