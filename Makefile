@@ -10,42 +10,42 @@ comment:
 	echo $(GIT_HASH) > src/comment/build_info.txt
 	echo $(BRANCH) >> src/comment/build_info.txt
 	docker build --build-arg VCS_REF=$(GIT_HASH) \
-	  --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
-		-t $(USER_NAME)/comment:$(GIT_HASH) src/comment
+	 --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+	 -t $(USER_NAME)/comment:$(GIT_HASH) src/comment
 	docker tag $(USER_NAME)/comment:$(GIT_HASH) $(USER_NAME)/comment:$(VERSION)
 
 post:
 	echo $(GIT_HASH) > src/post-py/build_info.txt
 	echo $(BRANCH) >> src/post-py/build_info.txt
 	docker build --build-arg VCS_REF=$(GIT_HASH) \
-	  --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
-		-t $(USER_NAME)/post:$(GIT_HASH) src/post-py
+	 --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+	 -t $(USER_NAME)/post:$(GIT_HASH) src/post-py
 	docker tag $(USER_NAME)/post:$(GIT_HASH) $(USER_NAME)/post:$(VERSION)
 
 ui:
 	echo $(GIT_HASH) > src/ui/build_info.txt
 	echo $(BRANCH) >> src/ui/build_info.txt
 	docker build --build-arg VCS_REF=$(GIT_HASH) \
-	  --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
-		-t $(USER_NAME)/ui:$(GIT_HASH) src/ui
+	 --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+	 -t $(USER_NAME)/ui:$(GIT_HASH) src/ui
 	docker tag $(USER_NAME)/ui:$(GIT_HASH) $(USER_NAME)/ui:$(VERSION)
 
 prom:
 	docker build --build-arg VCS_REF=$(GIT_HASH) \
-	  --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
-	  -t $(USER_NAME)/prometheus:$(GIT_HASH) monitoring/prometheus/config
+	 --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+	 -t $(USER_NAME)/prometheus:$(GIT_HASH) monitoring/prometheus/config
 	docker tag $(USER_NAME)/prometheus:$(GIT_HASH) $(USER_NAME)/prometheus:$(VERSION)
 
 alert:
 	docker build --build-arg VCS_REF=$(GIT_HASH) \
-	  --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
-		-t $(USER_NAME)/alertmanager:$(GIT_HASH) monitoring/prometheus/alertmanager
+	 --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+	 -t $(USER_NAME)/alertmanager:$(GIT_HASH) monitoring/prometheus/alertmanager
 	docker tag $(USER_NAME)/alertmanager:$(GIT_HASH) $(USER_NAME)/alertmanager:$(VERSION)
 
 blackbox:
 	docker build --build-arg VCS_REF=$(GIT_HASH) \
-	  --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
-		-t $(USER_NAME)/blackbox-exporter:$(GIT_HASH) monitoring/prometheus/blackbox-exporter
+	 --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+	 -t $(USER_NAME)/blackbox-exporter:$(GIT_HASH) monitoring/prometheus/blackbox-exporter
 	docker tag $(USER_NAME)/blackbox-exporter:$(GIT_HASH) $(USER_NAME)/blackbox-exporter:$(VERSION)
 
 push:
