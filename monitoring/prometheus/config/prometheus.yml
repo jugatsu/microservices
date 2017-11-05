@@ -2,7 +2,7 @@ global:
   scrape_interval: '5s'
 
 rule_files:
-  - "alert.rules"
+  - "alerts/*.rules"
 
 alerting:
   alertmanagers:

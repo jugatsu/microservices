@@ -1,0 +1,10 @@
+ALERT SlowHTTPRequests
+  IF histogram_quantile(0.95, rate(ui_request_latency_seconds_bucket[5m])) > 0.15
+  FOR 10m
+  LABELS {
+    severity = "warning"
+  }
+  ANNOTATIONS {
+    summary = "Slow HTTP requests",
+    description = "Slow HTTP requests on instance {{ $labels.instance }}."
+  }

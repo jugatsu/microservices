@@ -1,7 +1,7 @@
 FROM prom/prometheus:latest
 
 ADD prometheus.yml /etc/prometheus/
-ADD alert.rules /etc/prometheus/
+ADD alerts/*.rules /etc/prometheus/alerts/
 
 # Metadata params
 ARG BUILD_DATE
