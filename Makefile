@@ -17,7 +17,9 @@ comment:
 post:
 	echo $(GIT_HASH) > src/post-py/build_info.txt
 	echo $(BRANCH) >> src/post-py/build_info.txt
-	docker build -t $(USER_NAME)/post:$(GIT_HASH) src/post-py
+	docker build --build-arg VCS_REF=$(GIT_HASH) \
+	  --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+		-t $(USER_NAME)/post:$(GIT_HASH) src/post-py
 	docker tag $(USER_NAME)/post:$(GIT_HASH) $(USER_NAME)/post:$(VERSION)
 
 ui:
