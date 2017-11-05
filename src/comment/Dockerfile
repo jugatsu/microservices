@@ -1,5 +1,4 @@
 FROM alpine:3.6
-LABEL maintainer="Anton Kvashenkin <anton.jugatsu@gmail.com> (@jugatsu)"
 
 RUN apk --no-cache add ruby ruby-json tzdata
 
@@ -26,5 +25,16 @@ COPY . $APP_HOME
 
 ENV COMMENT_DATABASE_HOST=comment_db
 ENV COMMENT_DATABASE=comments
+
+# Metadata params
+ARG BUILD_DATE
+ARG VCS_REF
+
+# Metadata
+LABEL org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.vcs-url="https://github.com/jugatsu/microservices.git" \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.schema-version="1.0" \
+      maintainer="Anton Kvashenkin <anton.jugatsu@gmail.com> (@jugatsu)"
 
 CMD ["puma"]

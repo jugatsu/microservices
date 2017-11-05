@@ -9,8 +9,10 @@ all: comment post ui prom alert blackbox
 comment:
 	echo $(GIT_HASH) > src/comment/build_info.txt
 	echo $(BRANCH) >> src/comment/build_info.txt
-	docker build -t $(USER_NAME)/comment:$(GIT_HASH) src/comment
-	docker tag $(USER_NAME)/comment:$(VERSION) $(USER_NAME)/comment:$(GIT_HASH)
+	docker build --build-arg VCS_REF=$(GIT_HASH) \
+	  --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+		-t $(USER_NAME)/comment:$(GIT_HASH) src/comment
+	docker tag $(USER_NAME)/comment:$(GIT_HASH) $(USER_NAME)/comment:$(VERSION)
 
 post:
 	echo $(GIT_HASH) > src/post-py/build_info.txt
