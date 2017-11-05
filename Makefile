@@ -31,10 +31,16 @@ prom:
 	docker tag $(USER_NAME)/prometheus:$(VERSION) $(USER_NAME)/prometheus:$(GIT_HASH)
 
 alert:
-	docker build -t $(USER_NAME)/alertmanager:$(VERSION) monitoring/prometheus/alertmanager
+	docker build --build-arg VCS_REF=$(GIT_HASH) \
+	  --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+		-t $(USER_NAME)/alertmanager:$(VERSION) monitoring/prometheus/alertmanager
+	docker tag $(USER_NAME)/alertmanager:$(VERSION) $(USER_NAME)/alertmanager:$(GIT_HASH)
 
 blackbox:
-	docker build -t $(USER_NAME)/blackbox-exporter:$(VERSION) monitoring/prometheus/blackbox-exporter
+	docker build --build-arg VCS_REF=$(GIT_HASH) \
+	  --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+		-t $(USER_NAME)/blackbox-exporter:$(VERSION) monitoring/prometheus/blackbox-exporter
+	docker tag $(USER_NAME)/blackbox-exporter:$(VERSION) $(USER_NAME)/blackbox-exporter:$(GIT_HASH)
 
 push:
 	docker push $(USER_NAME)/comment:$(VERSION)
@@ -44,5 +50,8 @@ push:
 	docker push $(USER_NAME)/ui:$(VERSION)
 	docker push $(USER_NAME)/ui:$(GIT_HASH)
 	docker push $(USER_NAME)/prometheus:$(VERSION)
+	docker push $(USER_NAME)/prometheus:$(GIT_HASH)
 	docker push $(USER_NAME)/alertmanager:$(VERSION)
+	docker push $(USER_NAME)/alertmanager:$(GIT_HASH)
 	docker push $(USER_NAME)/blackbox-exporter:$(VERSION)
+	docker push $(USER_NAME)/blackbox-exporter:$(GIT_HASH)
