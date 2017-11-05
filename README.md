@@ -4,10 +4,6 @@ Dockerized reddit-like app https://github.com/Artemmkin/reddit.
 
 ## Directory structure:
 
-#### `/monolith`
-
-Contains files for building monolith Docker image with [reddit](https://github.com/Artemmkin/reddit) app.
-
 #### `/post-py`
 
 Contains files for building `post` microservice.
