@@ -1,0 +1,12 @@
+ALERT LowDiskSpace
+  IF
+      node_filesystem_avail{job="node", fstype=~"(ext.|xfs)"}
+    /
+      node_filesystem_size{job="node", fstype=~"(ext.|xfs)"}
+    * 100 <= 10
+  FOR 5m
+  LABELS { severity = "critical" }
+  ANNOTATIONS {
+    title = "Really low disk space left on {{ $labels.mountpoint }} on {{ $labels.fqdn }}: {{ $value | humanize }}%",
+    description = "Consider sshing into the instance and removing old logs or clean temp files."
+  }

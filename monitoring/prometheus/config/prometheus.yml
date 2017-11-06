@@ -1,6 +1,16 @@
 global:
   scrape_interval: '5s'
 
+rule_files:
+  - "alerts/*.rules"
+
+alerting:
+  alertmanagers:
+    - scheme: http
+      static_configs:
+        - targets:
+          - "alertmanager:9093"
+
 scrape_configs:
   - job_name: 'prometheus'
     static_configs:
@@ -39,3 +49,13 @@ scrape_configs:
         target_label: instance
       - target_label: __address__
         replacement: blackbox-exporter:9115
+
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets:
+          - 'cadvisor:8080'
+
+  - job_name: 'post'
+    static_configs:
+      - targets:
+        - 'post:5000'

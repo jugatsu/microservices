@@ -4,31 +4,19 @@ Dockerized reddit-like app https://github.com/Artemmkin/reddit.
 
 ## Directory structure:
 
-#### `/monolith`
+#### `/src`
 
-Contains files for building monolith Docker image with [reddit](https://github.com/Artemmkin/reddit) app.
-
-#### `/post-py`
-
-Contains files for building `post` microservice.
-
-#### `/comment`
-
-Contains files for building `comment` microservice.
-
-#### `/ui`
-
-Contains files for building `UI` microservice.
+Source code for all microservices.
 
 #### `/scripts`
 
 `create-docker-host.sh`: example script to provision docker host via `docker-machine` in GCE.
 
-#### `/prometheus`
+#### `/monitoring`
 
-`blackbox-exporter/`: Dockerfile and config file for building [blackbox_exporter](https://github.com/prometheus/blackbox_exporter) image.
+`prometheus/`: Dockerfiles for building [prometheus](https://github.com/prometheus/prometheus) stack.
 
-`config/`: Dockerfile and config file for building [prometheus](https://github.com/prometheus/prometheus) image.
+`grafana/`: [Grafana](https://grafana.com) dashboards.
 
 # Usage
 
@@ -40,20 +28,6 @@ $ docker-compose up -d
 
 ## Build images locally
 
-To build `post` container run from `post-py` folder:
-
 ```bash
-$ . ./docker_build.sh
-```
-
-To build `comment` container run from `comment` folder:
-
-```bash
-$ . ./docker_build.sh
-```
-
-To build `ui` container run from `ui` folder:
-
-```bash
-$ . ./docker_build.sh
+$ make all
 ```

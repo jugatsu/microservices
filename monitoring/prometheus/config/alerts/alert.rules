@@ -1,0 +1,8 @@
+# Alert for any instance that is unreachable for >1 minutes.
+ALERT InstanceDown
+  IF up == 0
+  FOR 1m
+  ANNOTATIONS {
+    summary = "Instance {{ $labels.instance }} is down",
+    description = "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 1 minute.",
+  }
