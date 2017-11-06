@@ -2,9 +2,9 @@ BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 GIT_HASH = $(shell git show --format="%h" HEAD | head -1)
 VERSION ?= latest
 
-.PHONY: all comment post ui prom alert blackbox push
+.PHONY: all comment post ui prom alert blackbox mongodb push
 
-all: comment post ui prom alert blackbox
+all: comment post ui prom alert blackbox mongodb
 
 comment:
 	echo $(GIT_HASH) > src/comment/build_info.txt
@@ -48,6 +48,12 @@ blackbox:
 	 -t $(USER_NAME)/blackbox-exporter:$(GIT_HASH) monitoring/prometheus/blackbox-exporter
 	docker tag $(USER_NAME)/blackbox-exporter:$(GIT_HASH) $(USER_NAME)/blackbox-exporter:$(VERSION)
 
+mongodb:
+	docker build --build-arg VCS_REF=$(GIT_HASH) \
+	 --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+	 -t $(USER_NAME)/mongodb_exporter:$(GIT_HASH) monitoring/prometheus/mongodb_exporter
+	docker tag $(USER_NAME)/mongodb_exporter:$(GIT_HASH) $(USER_NAME)/mongodb_exporter:$(VERSION)
+
 push:
 	docker push $(USER_NAME)/comment:$(VERSION)
 	docker push $(USER_NAME)/comment:$(GIT_HASH)
@@ -61,3 +67,5 @@ push:
 	docker push $(USER_NAME)/alertmanager:$(GIT_HASH)
 	docker push $(USER_NAME)/blackbox-exporter:$(VERSION)
 	docker push $(USER_NAME)/blackbox-exporter:$(GIT_HASH)
+	docker push $(USER_NAME)/mongodb_exporter:$(VERSION)
+	docker push $(USER_NAME)/mongodb_exporter:$(GIT_HASH)
