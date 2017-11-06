@@ -317,8 +317,8 @@
     "list": []
   },
   "time": {
-    "from": "2017-11-04T18:30:32.703Z",
-    "to": "2017-11-04T18:31:10.185Z"
+    "from": "now-15m",
+    "to": "now"
   },
   "timepicker": {
     "refresh_intervals": [
