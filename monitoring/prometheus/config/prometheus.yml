@@ -59,3 +59,8 @@ scrape_configs:
     static_configs:
       - targets:
         - 'post:5000'
+
+  - job_name: 'stackdriver-exporter'
+    static_configs:
+      - targets:
+        - 'stackdriver-exporter:9255'

@@ -1,0 +1,21 @@
+version: '3.3'
+
+services:
+
+  stackdriver-exporter:
+    image: frodenas/stackdriver-exporter
+    command:
+      - '-monitoring.metrics-type-prefixes=compute.googleapis.com/instance/cpu,compute.googleapis.com/instance/disk'
+    volumes:
+      # for docker-machine users copy service key to docker host using
+      # `docker-machine scp` command. Example:
+      # docker-machine scp ~/.config/gcloud/application_default_credentials.json \
+      #  docker-host:/home/docker-user/.application_default_credentials.json
+      - /home/docker-user:/google/
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/google/.application_default_credentials.json
+      - STACKDRIVER_EXPORTER_GOOGLE_PROJECT_ID=${STACKDRIVER_EXPORTER_GOOGLE_PROJECT_ID}
+    ports:
+      - 9255:9255
+    networks:
+      - back_net
