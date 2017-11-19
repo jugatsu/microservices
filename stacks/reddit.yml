@@ -1,0 +1,69 @@
+version: '3.3'
+
+services:
+
+  mongo:
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+
+  post:
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 1s
+        max_attempts: 10
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: 300M
+      update_config:
+        delay: 10s
+        failure_action: rollback
+        parallelism: 2
+      mode: replicated
+      replicas: 3
+      placement:
+        constraints:
+          - node.role == worker
+
+  comment:
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 1s
+        max_attempts: 10
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: 500M
+      update_config:
+        delay: 10s
+        failure_action: rollback
+        parallelism: 2
+      mode: replicated
+      replicas: 3
+      placement:
+        constraints:
+          - node.role == worker
+
+  ui:
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 3s
+        max_attempts: 3
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 150M
+      update_config:
+        delay: 5s
+        failure_action: pause
+        parallelism: 1
+      mode: replicated
+      replicas: 3
+      placement:
+        constraints:
+          - node.role == worker
