@@ -1,0 +1,89 @@
+version: '3.3'
+
+services:
+
+  prometheus:
+    image: ${USER_NAME}/prometheus:${PROMETHEUS_VERSION}
+    volumes:
+      - prometheus_data:/prometheus-data
+    command:
+      - '-config.file=/etc/prometheus/prometheus.yml'
+      - '-storage.local.path=/prometheus-data'
+    ports:
+      - "${PROMETHEUS_PORT}:9090"
+    networks:
+      - front_net
+      - back_net
+
+  node-exporter:
+    image: prom/node-exporter:${NODE_EXPORTER_VERSION}
+    user: root
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
+    networks:
+      - back_net
+
+  mongodb-exporter:
+    image: ${USER_NAME}/mongodb_exporter:${MONGO_EXPORTER_VERSION}
+    environment:
+      - MONGODB_URL=mongodb://mongo:27017
+    networks:
+      - back_net
+
+  blackbox-exporter:
+    image: ${USER_NAME}/blackbox-exporter:${BLACKBOX_EXPORTER_VERSION}
+    command:
+      '--config.file=/config/blackbox.yml'
+    ports:
+      - "${BLACKBOX_EXPORTER_PORT}:9115"
+    networks:
+      - back_net
+
+  cadvisor:
+    image: google/cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    ports:
+      - 8080:8080
+    networks:
+    - back_net
+
+  alertmanager:
+    image: ${USER_NAME}/alertmanager:${ALERTMANAGER_VERSION}
+    command:
+      '-config.file=/etc/alertmanager/config.yml'
+    ports:
+      - 9093:9093
+    networks:
+      - back_net
+
+  grafana:
+    image: grafana/grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=secret
+    depends_on: ['prometheus']
+    ports:
+      - 3000:3000
+    networks:
+      - front_net
+      - back_net
+
+volumes:
+  grafana_data: {}
+  prometheus_data: {}
+
+networks:
+  back_net: {}
+  front_net: {}
