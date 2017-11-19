@@ -1,4 +1,4 @@
-FROM prom/prometheus:latest
+FROM prom/prometheus:v1.8.2
 
 ADD prometheus.yml /etc/prometheus/
 ADD alerts/*.rules /etc/prometheus/alerts/
