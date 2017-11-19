@@ -1,0 +1,15 @@
+version: '3.3'
+
+services:
+
+  post:
+    volumes:
+      - ./src/post-py:/app
+
+  comment:
+    volumes:
+      - ./src/comment:/app
+
+  ui:
+    volumes:
+      - ./src/ui:/app
