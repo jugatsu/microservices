@@ -1,0 +1,36 @@
+version: '3.3'
+
+services:
+
+  prometheus:
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+
+  grafana:
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+
+  node-exporter:
+    deploy:
+      mode: global
+
+  cadvisor:
+    hostname: '{{.Node.ID}}'
+    deploy:
+      mode: global
+
+  viz:
+    image: dockersamples/visualizer
+    ports:
+      - 8081:8080
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+    deploy:
+        placement:
+            constraints: [node.role == manager]
+    networks:
+      - back_net
