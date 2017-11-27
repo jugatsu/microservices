@@ -5,3 +5,7 @@ build_info.txt
 # patch
 *.orig
 *.rej
+
+# python
+*.pyc
+*.pyo

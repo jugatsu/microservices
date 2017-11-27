@@ -26,6 +26,8 @@ prometheus.register(ui_health_comment_gauge)
 
 ## Schedule healthcheck function
 build_info=File.readlines('build_info.txt')
+@@host_info=ENV['HOSTNAME']
+@@env_info=ENV['ENV']
 
 scheduler = Rufus::Scheduler.new
 

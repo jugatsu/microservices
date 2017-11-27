@@ -1,0 +1,41 @@
+version: '3.3'
+
+services:
+
+  mongo:
+    networks:
+      back_net:
+        aliases:
+          - db.prod.acme.com
+
+  post:
+    environment:
+      # address of bare-metal production MongoDB database
+      - COMMENT_DATABASE_HOST=db.prod.acme.com
+      - POST_DATABASE_HOST=db.prod.acme.com
+
+  ui:
+    environment:
+      - ENV=PRODUCTION
+
+  comment:
+    environment:
+      # address of bare-metal production MongoDB database
+      - COMMENT_DATABASE_HOST=db.prod.acme.com
+      - POST_DATABASE_HOST=db.prod.acme.com
+
+  portainer:
+    image: portainer/portainer
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    ports:
+      - 9000:9000
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - portainer_data:/data
+    networks:
+      - back_net
+
+volumes:
+  portainer_data: {}
