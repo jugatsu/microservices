@@ -6,19 +6,23 @@ services:
     networks:
       back_net:
         aliases:
-          - prod.db.acme.com
+          - db.prod.acme.com
 
   post:
-    env_file:
-      - .env.prod
+    environment:
+      # address of bare-metal production MongoDB database
+      - COMMENT_DATABASE_HOST=db.prod.acme.com
+      - POST_DATABASE_HOST=db.prod.acme.com
 
   ui:
     environment:
       - ENV=PRODUCTION
 
   comment:
-    env_file:
-      - .env.prod
+    environment:
+      # address of bare-metal production MongoDB database
+      - COMMENT_DATABASE_HOST=db.prod.acme.com
+      - POST_DATABASE_HOST=db.prod.acme.com
 
   portainer:
     image: portainer/portainer
