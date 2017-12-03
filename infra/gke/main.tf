@@ -26,6 +26,7 @@ resource "google_container_cluster" "cluster" {
     ]
   }
 
+  // configure kubectl
   provisioner "local-exec" {
     command = "gcloud container clusters get-credentials ${var.gke_name} --zone ${var.gke_zone} --project ${var.google_project}"
   }
