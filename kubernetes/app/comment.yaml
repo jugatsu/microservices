@@ -1,0 +1,46 @@
+---
+# ------------------- Comment Deployment ------------------- #
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: comment
+  labels:
+    app: reddit
+    component: comment
+spec:
+  selector:
+    matchLabels:
+      app: reddit
+      component: comment
+  replicas: 3
+  template:
+    metadata:
+      name: comment
+      labels:
+        app: reddit
+        component: comment
+    spec:
+      containers:
+      - image: jugatsu/comment:latest
+        name: comment
+        env:
+        - name: COMMENT_DATABASE_HOST
+          value: comment-db
+
+---
+# ------------------- Comment Service ------------------- #
+apiVersion: v1
+kind: Service
+metadata:
+  name: comment
+  labels:
+    app: reddit
+    component: comment
+spec:
+  ports:
+  - port: 9292
+    protocol: TCP
+    targetPort: 9292
+  selector:
+    app: reddit
+    component: comment
