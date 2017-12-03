@@ -1,0 +1,49 @@
+---
+# ------------------- UI Deployment ------------------- #
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: ui
+  labels:
+    app: reddit
+    component: ui
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: reddit
+      component: ui
+  template:
+    metadata:
+      name: ui
+      labels:
+        app: reddit
+        component: ui
+    spec:
+      containers:
+      - image: jugatsu/ui:latest
+        name: ui
+        env:
+        - name: ENV
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+
+---
+# ------------------- UI Service ------------------- #
+apiVersion: v1
+kind: Service
+metadata:
+  name: ui
+  labels:
+    app: reddit
+    component: ui
+spec:
+  type: NodePort
+  ports:
+  - port: 9292
+    protocol: TCP
+    targetPort: 9292
+  selector:
+    app: reddit
+    component: ui
