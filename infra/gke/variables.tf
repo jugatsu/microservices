@@ -48,6 +48,6 @@ variable "gke_node_machine_type" {
 }
 
 variable "gke_node_image" {
-  default     = "cos"
+  default     = "COS"
   description = "The image type to use for this node"
 }
