@@ -1,0 +1,5 @@
+#################################
+# Google Cloud Provider variables
+#################################
+
+google_project = "YOUR_PROJECT"
