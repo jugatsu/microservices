@@ -10,3 +10,5 @@ google_project = "YOUR_PROJECT"
 
 gke_network_policy    = true
 gke_node_machine_type = "n1-standard-2"
+gke_volume_name       = "reddit-mongo-data"
+gke_volume_size       = 25

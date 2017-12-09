@@ -38,6 +38,13 @@ resource "google_container_cluster" "cluster" {
   }
 }
 
+// Ensure disk for using with PersistentVolume is created
+resource "google_compute_disk" "default" {
+  name = "${var.gke_volume_name}"
+  size = "${var.gke_volume_size}"
+  zone = "${var.gke_zone}"
+}
+
 // Ensure firewall rule for application access is present and configured
 resource "google_compute_firewall" "firewall" {
   name        = "gke-reddit-app"

@@ -56,3 +56,9 @@ variable "gke_node_image" {
   default     = "COS"
   description = "The image type to use for this node"
 }
+
+variable "gke_volume_name" {
+  description = "The name of volume to use with Kubernetes PersistentVolume"
+}
+
+variable "gke_volume_size" {}
