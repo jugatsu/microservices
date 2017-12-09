@@ -1,0 +1,18 @@
+---
+# ------------------- UI Service ------------------- #
+apiVersion: v1
+kind: Service
+metadata:
+  name: ui
+  labels:
+    app: reddit
+    component: ui
+spec:
+  type: NodePort
+  ports:
+  - port: 9292
+    protocol: TCP
+    targetPort: 9292
+  selector:
+    app: reddit
+    component: ui
