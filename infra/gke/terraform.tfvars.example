@@ -3,3 +3,10 @@
 #################################
 
 google_project = "YOUR_PROJECT"
+
+################################
+# Kubernetes Provider variables
+################################
+
+gke_network_policy    = true
+gke_node_machine_type = "n1-standard-2"

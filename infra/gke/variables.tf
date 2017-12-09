@@ -24,6 +24,11 @@ variable "gke_name" {
   description = "The name of GKE cluster"
 }
 
+variable "gke_network_policy" {
+  default = false
+  description = "Cluster Network Policy"
+}
+
 variable "gke_node_count" {
   default     = 3
   description = "The number of nodes in GKE cluster"

@@ -13,6 +13,12 @@ resource "google_container_cluster" "cluster" {
     }
   }
 
+  // cluster network policy
+  network_policy {
+    provider = "CALICO"
+    enabled  = "${var.gke_network_policy ? 1 : 0}"
+  }
+
   node_config {
     disk_size_gb = "${var.gke_node_size}"
     image_type   = "${var.gke_node_image}"
