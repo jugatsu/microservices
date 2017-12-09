@@ -30,7 +30,7 @@ variable "gke_node_count" {
 }
 
 variable "gke_version" {
-  default = "1.8.3-gke.0"
+  default = "1.8.4-gke.0"
 }
 
 variable "gke_zone" {
