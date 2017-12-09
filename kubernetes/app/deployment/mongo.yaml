@@ -32,4 +32,5 @@ spec:
           mountPath: /data/db
       volumes:
       - name: mongo-persistent-storage
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: mongo-ssd
