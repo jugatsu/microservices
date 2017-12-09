@@ -25,7 +25,7 @@ variable "gke_name" {
 }
 
 variable "gke_network_policy" {
-  default = false
+  default     = false
   description = "Cluster Network Policy"
 }
 
