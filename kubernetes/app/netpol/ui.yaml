@@ -1,0 +1,17 @@
+---
+# ------------------- UI Nework Policy ------------------- #
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ui-access
+  labels:
+    app: reddit
+spec:
+  podSelector:
+    matchLabels:
+      app: reddit
+      component: ui
+  ingress:
+  - ports:
+    - port: 9292
+    from: []

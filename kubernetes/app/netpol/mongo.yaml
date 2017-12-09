@@ -1,0 +1,27 @@
+---
+# ------------------- MongoDB Nework Policy ------------------- #
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: db-access
+  labels:
+    app: reddit
+spec:
+  podSelector:
+    matchLabels:
+      app: reddit
+      component: mongo
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: reddit
+          component: comment
+  - from:
+    - podSelector:
+        matchLabels:
+          app: reddit
+          component: post
+    ports:
+      - protocol: TCP
+        port: 27017
