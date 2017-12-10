@@ -38,6 +38,21 @@ resource "google_container_cluster" "cluster" {
   }
 }
 
+// Ensure secret with tls keys for ingress is created
+resource "kubernetes_secret" "ingress" {
+  metadata {
+    name = "ui-ingress"
+  }
+
+  data {
+    tls.key = "${tls_private_key.ingress.private_key_pem}"
+    tls.crt = "${tls_locally_signed_cert.ingress.cert_pem}"
+  }
+
+  type       = "kubernetes.io/tls"
+  depends_on = ["google_container_cluster.cluster"]
+}
+
 // Ensure disk for using with PersistentVolume is created
 resource "google_compute_disk" "default" {
   name = "${var.gke_volume_name}"
