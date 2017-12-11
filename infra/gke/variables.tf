@@ -24,13 +24,18 @@ variable "gke_name" {
   description = "The name of GKE cluster"
 }
 
+variable "gke_network_policy" {
+  default     = false
+  description = "Cluster Network Policy"
+}
+
 variable "gke_node_count" {
   default     = 3
   description = "The number of nodes in GKE cluster"
 }
 
 variable "gke_version" {
-  default = "1.8.3-gke.0"
+  default = "1.8.4-gke.0"
 }
 
 variable "gke_zone" {
@@ -51,3 +56,9 @@ variable "gke_node_image" {
   default     = "COS"
   description = "The image type to use for this node"
 }
+
+variable "gke_volume_name" {
+  description = "The name of volume to use with Kubernetes PersistentVolume"
+}
+
+variable "gke_volume_size" {}

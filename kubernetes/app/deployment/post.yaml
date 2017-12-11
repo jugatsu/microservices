@@ -26,21 +26,3 @@ spec:
         env:
         - name: POST_DATABASE_HOST
           value: post-db
-
----
-# ------------------- Post Service ------------------- #
-apiVersion: v1
-kind: Service
-metadata:
-  name: post
-  labels:
-    app: reddit
-    component: post
-spec:
-  ports:
-  - port: 5000
-    protocol: TCP
-    targetPort: 5000
-  selector:
-    app: reddit
-    component: post

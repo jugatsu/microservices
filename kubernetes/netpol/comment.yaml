@@ -1,0 +1,22 @@
+---
+# ------------------- Comment Nework Policy ------------------- #
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: comment-access
+  labels:
+    app: reddit
+spec:
+  podSelector:
+    matchLabels:
+      app: reddit
+      component: comment
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: reddit
+          component: ui
+    ports:
+      - protocol: TCP
+        port: 9292

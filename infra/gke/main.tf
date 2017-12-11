@@ -13,6 +13,12 @@ resource "google_container_cluster" "cluster" {
     }
   }
 
+  // cluster network policy
+  network_policy {
+    provider = "CALICO"
+    enabled  = "${var.gke_network_policy ? 1 : 0}"
+  }
+
   node_config {
     disk_size_gb = "${var.gke_node_size}"
     image_type   = "${var.gke_node_image}"
@@ -30,6 +36,28 @@ resource "google_container_cluster" "cluster" {
   provisioner "local-exec" {
     command = "gcloud container clusters get-credentials ${var.gke_name} --zone ${var.gke_zone} --project ${var.google_project}"
   }
+}
+
+// Ensure secret with tls keys for ingress is created
+resource "kubernetes_secret" "ingress" {
+  metadata {
+    name = "ui-ingress"
+  }
+
+  data {
+    tls.key = "${tls_private_key.ingress.private_key_pem}"
+    tls.crt = "${tls_locally_signed_cert.ingress.cert_pem}"
+  }
+
+  type       = "kubernetes.io/tls"
+  depends_on = ["google_container_cluster.cluster"]
+}
+
+// Ensure disk for using with PersistentVolume is created
+resource "google_compute_disk" "default" {
+  name = "${var.gke_volume_name}"
+  size = "${var.gke_volume_size}"
+  zone = "${var.gke_zone}"
 }
 
 // Ensure firewall rule for application access is present and configured
