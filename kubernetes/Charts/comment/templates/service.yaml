@@ -3,15 +3,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: comment
+  name: {{ template "comment.fullname" . }}
   labels:
     app: reddit
     component: comment
+    release: {{ .Release.Name }}
 spec:
   ports:
-  - port: 9292
+  - port: {{ .Values.service.externalPort }}
     protocol: TCP
-    targetPort: 9292
+    targetPort: {{ .Values.service.internalPort }}
   selector:
     app: reddit
     component: comment
+    release: {{ .Release.Name }}

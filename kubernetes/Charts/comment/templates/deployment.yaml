@@ -3,15 +3,17 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: comment
+  name: {{ template "comment.fullname" . }}
   labels:
     app: reddit
     component: comment
+    release: {{ .Release.Name }}
 spec:
   selector:
     matchLabels:
       app: reddit
       component: comment
+      release: {{ .Release.Name }}
   replicas: 3
   template:
     metadata:
@@ -19,10 +21,15 @@ spec:
       labels:
         app: reddit
         component: comment
+        release: {{ .Release.Name }}
     spec:
       containers:
-      - image: jugatsu/comment:latest
+      - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         name: comment
+        ports:
+        - containerPort: {{ .Values.service.internalPort }}
+          name: comment
+          protocol: TCP
         env:
         - name: COMMENT_DATABASE_HOST
-          value: comment-db
+          value: {{ .Values.databaseHost | default (printf "%s-mongodb" .Release.Name) }}
