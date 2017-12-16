@@ -1,0 +1,13 @@
+dependencies:
+  - name: ui
+    version: "1.0.0"
+    repository: "file://../ui"
+  - name: post
+    version: "1.0.0"
+    repository: "file://../post"
+  - name: comment
+    version: "1.0.0"
+    repository: "file://../comment"
+  - name: mongodb
+    version: "0.4.20"
+    repository: "https://kubernetes-charts.storage.googleapis.com"
