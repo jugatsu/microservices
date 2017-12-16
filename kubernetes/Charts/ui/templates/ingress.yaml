@@ -4,12 +4,13 @@ kind: Ingress
 metadata:
   name: {{ .Release.Name }}-{{ .Chart.Name }}
   annotations:
-    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
 spec:
   rules:
-  - http:
+  - host: {{ .Values.ingress.host | default .Release.Name }}
+    http:
       paths:
-      - path: /*
+      - path: /
         backend:
-          serviceName: {{ .Release.Name }}-{{ .Chart.Name }}
+          serviceName: {{ template "ui.fullname" . }}
           servicePort: {{ .Values.service.externalPort }}
