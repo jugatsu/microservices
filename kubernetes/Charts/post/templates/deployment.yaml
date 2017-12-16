@@ -3,15 +3,17 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: post
+  name: {{ template "post.fullname" . }}
   labels:
     app: reddit
     component: post
+    release: {{ .Release.Name }}
 spec:
   selector:
     matchLabels:
       app: reddit
       component: post
+      release: {{ .Release.Name }}
   replicas: 3
   template:
     metadata:
@@ -19,10 +21,15 @@ spec:
       labels:
         app: reddit
         component: post
+        release: {{ .Release.Name }}
     spec:
       containers:
-      - image: jugatsu/post:latest
+      - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         name: post
+        ports:
+          - containerPort: {{ .Values.service.internalPort }}
+            name: post
+            protocol: TCP
         env:
         - name: POST_DATABASE_HOST
-          value: post-db
+          value: {{ .Values.databaseHost | default (printf "%s-mongodb" .Release.Name) }}

@@ -1,0 +1,10 @@
+---
+service:
+  internalPort: 5000
+  externalPort: 5000
+
+image:
+  repository: jugatsu/post
+  tag: latest
+
+databaseHost:
