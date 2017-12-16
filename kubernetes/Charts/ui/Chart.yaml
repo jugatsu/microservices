@@ -1,0 +1,7 @@
+name: ui
+version: 1.0.0
+description: OTUS Reddit application UI
+maintainers:
+  - name: Anton Kvashenkin
+    email: anton.jugatsu@gmail.com
+appVersion: 1.0.0

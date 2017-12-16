@@ -1,0 +1,13 @@
+---
+service:
+  internalPort: 9292
+  externalPort: 9292
+
+image:
+  repository: jugatsu/ui
+  tag: latest
+
+postHost:
+postPort:
+commentHost:
+commentPort:
