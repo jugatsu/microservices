@@ -16,3 +16,6 @@ build_info.txt
 *.tfstate.backup
 *.tfvars
 .terraform/
+
+# Chart dependencies
+**/charts/*.tgz
