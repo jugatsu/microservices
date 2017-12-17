@@ -9,7 +9,6 @@ metadata:
     heritage: "{{ .Release.Service }}"
 data:
   external_scheme: http
-  # external_hostname: gitlab.{{ .Values.baseDomain }}
   external_hostname: {{ template "fullname" . }}
   registry_external_scheme: https
   registry_external_hostname: registry.{{ .Values.baseDomain }}
