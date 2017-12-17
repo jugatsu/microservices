@@ -1,10 +1,28 @@
----
-service:
-  internalPort: 9292
-  externalPort: 9292
-
+# Default values for comment.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+replicaCount: 3
 image:
   repository: jugatsu/comment
   tag: latest
+  pullPolicy: IfNotPresent
+service:
+  name: comment
+  type: ClusterIP
+  externalPort: 9292
+  internalPort: 9292
 
+# Database host configuration
 databaseHost:
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi

@@ -1,35 +1,39 @@
----
-# ------------------- Comment Deployment ------------------- #
-apiVersion: apps/v1beta2
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: {{ template "comment.fullname" . }}
   labels:
     app: reddit
-    component: comment
+    component: {{ template "comment.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
   selector:
     matchLabels:
       app: reddit
-      component: comment
+      component: {{ template "comment.name" . }}
       release: {{ .Release.Name }}
-  replicas: 3
+  replicas: {{ .Values.replicaCount }}
   template:
     metadata:
-      name: comment
       labels:
         app: reddit
-        component: comment
+        component: {{ template "comment.name" . }}
         release: {{ .Release.Name }}
     spec:
       containers:
-      - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        name: comment
-        ports:
-        - containerPort: {{ .Values.service.internalPort }}
-          name: comment
-          protocol: TCP
-        env:
-        - name: COMMENT_DATABASE_HOST
-          value: {{ .Values.databaseHost | default (printf "%s-mongodb" .Release.Name) }}
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.internalPort }}
+          env:
+            - name: COMMENT_DATABASE_HOST
+              value: {{ .Values.databaseHost | default (printf "%s-mongodb" .Release.Name) }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+    {{- end }}
