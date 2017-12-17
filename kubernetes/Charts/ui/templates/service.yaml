@@ -1,20 +1,21 @@
----
-# ------------------- UI Service ------------------- #
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-{{ .Chart.Name }}
+  name: {{ template "ui.fullname" . }}
   labels:
     app: reddit
-    component: ui
+    component: {{ template "ui.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
-  type: NodePort
+  type: {{ .Values.service.type }}
   ports:
-  - port: {{ .Values.service.externalPort }}
-    protocol: TCP
-    targetPort: {{ .Values.service.internalPort }}
+    - port: {{ .Values.service.externalPort }}
+      targetPort: {{ .Values.service.internalPort }}
+      protocol: TCP
+      name: {{ .Values.service.name }}
   selector:
     app: reddit
-    component: ui
+    component: {{ template "ui.name" . }}
     release: {{ .Release.Name }}

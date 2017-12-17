@@ -1,45 +1,49 @@
----
-# ------------------- UI Deployment ------------------- #
-apiVersion: apps/v1beta2
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: {{ template "ui.fullname" . }}
   labels:
     app: reddit
-    component: ui
+    component: {{ template "ui.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
-  replicas: 3
   selector:
     matchLabels:
       app: reddit
-      component: ui
+      component: {{ template "ui.name" . }}
       release: {{ .Release.Name }}
+  replicas: {{ .Values.replicaCount }}
   template:
     metadata:
-      name: ui
       labels:
         app: reddit
-        component: ui
+        component: {{ template "ui.name" . }}
         release: {{ .Release.Name }}
     spec:
       containers:
-      - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        name: ui
-        ports:
-        - containerPort: {{ .Values.service.internalPort }}
-          name: ui
-          protocol: TCP
-        env:
-        - name: POST_SERVICE_HOST
-          value: {{  .Values.postHost | default (printf "%s-post" .Release.Name) }}
-        - name: POST_SERVICE_PORT
-          value: {{ .Values.postPort | default "5000" | quote }}
-        - name: COMMENT_SERVICE_HOST
-          value: {{  .Values.commentHost | default (printf "%s-comment" .Release.Name) }}
-        - name: COMMENT_SERVICE_PORT
-          value: {{  .Values.commentPort | default "9292" | quote }}
-        - name: ENV
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.internalPort }}
+          env:
+            - name: POST_SERVICE_HOST
+              value: {{  .Values.postHost | default (printf "%s-post" .Release.Name) }}
+            - name: POST_SERVICE_PORT
+              value: {{ .Values.postPort | default "5000" | quote }}
+            - name: COMMENT_SERVICE_HOST
+              value: {{  .Values.commentHost | default (printf "%s-comment" .Release.Name) }}
+            - name: COMMENT_SERVICE_PORT
+              value: {{  .Values.commentPort | default "9292" | quote }}
+            - name: ENV
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+    {{- end }}

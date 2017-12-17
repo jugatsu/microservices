@@ -1,7 +1,8 @@
 name: ui
-version: 1.0.0
-description: OTUS Reddit application UI
-maintainers:
-  - name: Anton Kvashenkin
-    email: anton.jugatsu@gmail.com
+home: https://github.com/jugatsu/microservices
+version: 0.1.0
 appVersion: 1.0.0
+description: UI microservice for Reddit-app
+maintainers:
+  - name: jugatsu
+    email: anton.jugatsu@gmail.com
