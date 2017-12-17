@@ -1,35 +1,39 @@
----
-# ------------------- Post Deployment ------------------- #
-apiVersion: apps/v1beta2
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: {{ template "post.fullname" . }}
   labels:
     app: reddit
-    component: post
+    component: {{ template "post.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
   selector:
     matchLabels:
       app: reddit
-      component: post
+      component: {{ template "post.name" . }}
       release: {{ .Release.Name }}
-  replicas: 3
+  replicas: {{ .Values.replicaCount }}
   template:
     metadata:
-      name: post
       labels:
         app: reddit
-        component: post
+        component: {{ template "post.name" . }}
         release: {{ .Release.Name }}
     spec:
       containers:
-      - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        name: post
-        ports:
-          - containerPort: {{ .Values.service.internalPort }}
-            name: post
-            protocol: TCP
-        env:
-        - name: POST_DATABASE_HOST
-          value: {{ .Values.databaseHost | default (printf "%s-mongodb" .Release.Name) }}
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.internalPort }}
+          env:
+            - name: POST_DATABASE_HOST
+              value: {{ .Values.databaseHost | default (printf "%s-mongodb" .Release.Name) }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+    {{- end }}

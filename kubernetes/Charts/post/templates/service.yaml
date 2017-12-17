@@ -1,19 +1,21 @@
----
-# ------------------- Post Service ------------------- #
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ template "post.fullname" . }}
   labels:
     app: reddit
-    component: post
+    component: {{ template "post.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
+  type: {{ .Values.service.type }}
   ports:
-  - port: {{ .Values.service.externalPort }}
-    protocol: TCP
-    targetPort: {{ .Values.service.internalPort }}
+    - port: {{ .Values.service.externalPort }}
+      targetPort: {{ .Values.service.internalPort }}
+      protocol: TCP
+      name: {{ .Values.service.name }}
   selector:
     app: reddit
-    component: post
+    component: {{ template "post.name" . }}
     release: {{ .Release.Name }}

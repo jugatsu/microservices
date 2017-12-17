@@ -1,2 +1,8 @@
 name: post
-version: 1.0.0
+home: https://github.com/jugatsu/microservices
+version: 0.1.0
+appVersion: 1.0.0
+description: Post microservice for Reddit-app
+maintainers:
+  - name: jugatsu
+    email: anton.jugatsu@gmail.com
