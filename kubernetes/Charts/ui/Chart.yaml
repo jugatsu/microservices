@@ -1,0 +1,8 @@
+name: ui
+home: https://github.com/jugatsu/microservices
+version: 0.1.0
+appVersion: 1.0.0
+description: UI microservice for Reddit-app
+maintainers:
+  - name: jugatsu
+    email: anton.jugatsu@gmail.com

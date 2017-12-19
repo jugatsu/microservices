@@ -1,0 +1,28 @@
+{{- if .Values.networkPolicy.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ template "comment.fullname" . }}
+  labels:
+    app: reddit
+    component: {{ template "comment.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  podSelector:
+    matchLabels:
+      app: reddit
+      component: {{ template "comment.name" . }}
+      release: {{ .Release.Name }}
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: reddit
+          component: {{ template "comment.name" . }}
+          release: {{ .Release.Name }}
+    ports:
+      - protocol: TCP
+        port: {{ .Values.service.internalPort }}
+{{- end }}        
