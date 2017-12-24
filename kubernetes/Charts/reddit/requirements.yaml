@@ -1,12 +1,12 @@
 dependencies:
   - name: ui
-    version: 0.1.0
+    version: 0.1.1
     repository: file://../ui
   - name: post
-    version: 0.1.0
+    version: 0.1.1
     repository: file://../post
   - name: comment
-    version: 0.1.0
+    version: 0.1.1
     repository: file://../comment
   - name: mongodb
     version: 0.4.20
