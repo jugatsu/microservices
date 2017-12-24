@@ -807,6 +807,8 @@ serverFiles:
             action: replace
             target_label: kubernetes_pod_name
 
+      # Scrape config for Reddit-app Post endponts
+      #
       - job_name: 'reddit-post-endpoints'
 
         kubernetes_sd_configs:
@@ -825,6 +827,8 @@ serverFiles:
             action: replace
             target_label: kubernetes_name
 
+      # Scrape config for Reddit-app Comment endponts
+      #
       - job_name: 'reddit-comment-endpoints'
 
         kubernetes_sd_configs:
@@ -843,6 +847,8 @@ serverFiles:
             action: replace
             target_label: kubernetes_name
 
+      # Scrape config for Reddit-app UI endponts
+      #
       - job_name: 'reddit-ui-endpoints'
 
         kubernetes_sd_configs:
