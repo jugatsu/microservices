@@ -1,0 +1,8 @@
+ui:
+  replicaCount: 3
+
+post:
+  replicaCount: 3
+
+comment:
+  replicaCount: 3
