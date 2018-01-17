@@ -10,17 +10,27 @@ Dockerized reddit-like app https://github.com/Artemmkin/reddit.
 
 ## Directory structure:
 
+#### `/deploy`
+
+Configuration to provision the application onto Docker Swarm or Kubernetes.
+
+#### `/infra`
+
+Terraform configuration for GKE cluster.
+
+#### `/scripts`
+
+`create-docker-host.sh`: example script to provision Docker host via `docker-machine` in GCE.
+
+`create-docker-swarm-gce`: example script to provision Docker Swarm cluster via `docker-machine` in GCE.
+
 #### `/src`
 
 Source code for all microservices.
 
-#### `/scripts`
-
-`create-docker-host.sh`: example script to provision docker host via `docker-machine` in GCE.
-
 #### `/monitoring`
 
-`prometheus/`: Dockerfiles for building [prometheus](https://github.com/prometheus/prometheus) stack.
+`prometheus/`: Dockerfiles for building [Prometheus](https://github.com/prometheus/prometheus) stack.
 
 `grafana/`: [Grafana](https://grafana.com) dashboards.
 
